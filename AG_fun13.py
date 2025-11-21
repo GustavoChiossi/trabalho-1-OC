@@ -5,19 +5,23 @@ import random                   # talvez use
 import math                     # calculos 
 import numpy                    # calculos
 
-#  restricoes
-x = 4.00, y = 3.53, z = 24.3212
+#  valores iniciais da funcao
+x = 4.00 
+y = 3.53 
+z = 24.3212
 
-def fun13(x, y): # funcao objetivo
+# funcao objetivo
+def funObjetivo(x, y): 
     return (
         math.sin(math.pi * x)**2 + (x - 1)**2 * (1 + math.sin(math.pi * y)**2) + (y - 1)**2
     )
+    
+# codificacao binaria
+def codificacao(bits, min=0.0, max=4.0, n_bits=12):         # 12 bits cabe o intervalo de 0 a 4 com precisao de 3 casas decimais
+    inteiro = int(bits, 2)                                  # conversao
+    return min + inteiro * ((max - min) / (2**n_bits - 1))  # formula de conversao
 
-while (x >= 0.0 and x <= 4.0 and y >= 0.0 and y <= 4.0) {
-    # codigo
-}
-
-# inicilizar a populacao
+# populacao inicial
 
 # selecao (metedo torneio)
 
