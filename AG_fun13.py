@@ -1,5 +1,4 @@
-# BIBLIOTECAS 
-
+# == BIBLIOTECAS 
 import matplotlib.pyplot as plt # plot de graficos
 import random                   # gerar populacao inicial
 import math                     # calculos 
@@ -8,7 +7,7 @@ import csv                      # gravar em csv
 import logging                  # arquivo de log  
 import os                       # criar pastas
 
-# CONFIGURACOES INICIAIS
+# == CONFIGURACOES INICIAIS
 
 # caminhos dos arquivos
 caminho_graficos = "graficos/"
@@ -104,22 +103,22 @@ def cruzamento_2_pontos(pai1, pai2):
 # log
 
 # configuracao do logging (depois
-logging.basicConfig(
-    filename='ag_fun13.log', 
-    level=logging.INFO, 
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-    handlers=[
-        logging.FileHandler(caminho_logs + 'ag_fun13.log'),
-        logging.StreamHandler()
-    ]    
-)
+#logging.basicConfig(
+#    filename='ag_fun13.log', 
+#    level=logging.INFO, 
+#    format='%(asctime)s - %(levelname)s - %(message)s',
+#    datefmt='%Y-%m-%d %H:%M:%S',
+#    handlers=[
+#        logging.FileHandler(caminho_logs + 'ag_fun13.log'),
+#        logging.StreamHandler()
+#    ]    
+#)
 
 # gravar em csv
 
 # plotar graficos
 
-# RESULTADOS DOS TESTES INICIAIS
+# == RESULTADOS DOS TESTES INICIAIS
 print("Melhor indivíduo:")
 print("Bits:", melhor[0])
 print(f"x: {melhor[1]:.3f}")
