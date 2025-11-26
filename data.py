@@ -1,40 +1,43 @@
-# TEM QUE SER GRAFICO 3D!!
-# não precisa de arquivo .log
-
+import numpy as np
+from matplotlib import cm
 import matplotlib.pyplot as plt
-import csv
 import os
+from funcoes import funObjetivo
 
-# def dos caminhos
 CAMINHO_GRAFICOS = "graficos/"
 CAMINHO_CSV = "csv/"
 
 def setup_diretorios():
     os.makedirs(CAMINHO_GRAFICOS, exist_ok=True)
     os.makedirs(CAMINHO_CSV, exist_ok=True)
-    print("Diretórios verificados/criados com sucesso.")
 
-def salvar_dados_csv(nome_arquivo, dados):
-    caminho_completo = os.path.join(CAMINHO_CSV, nome_arquivo)
-    arquivo_existe = os.path.isfile(caminho_completo)
-    
-    with open(caminho_completo, mode='a', newline='') as arquivo:
-        escritor = csv.writer(arquivo)
-        
-        if not arquivo_existe:
-            escritor.writerow(['Geracao', 'Melhor_Fitness', 'X', 'Y', 'Media_Fitness'])
-            
-        escritor.writerow(dados)
+def salvar_dados_csv(nome_arquivo, linha):
+    caminho = os.path.join(CAMINHO_CSV, nome_arquivo)
+    novo = not os.path.exists(caminho)
 
-def plotar_grafico_convergencia(historico_fitness, nome_arquivo="grafico.png"):
-    caminho_completo = os.path.join(CAMINHO_GRAFICOS, nome_arquivo)
-    
-    plt.figure()
-    plt.plot(historico_fitness)
-    plt.title('Convergência do Algoritmo Genético')
-    plt.xlabel('Geração')
-    plt.ylabel('Melhor Fitness')
-    plt.grid(True)
-    plt.savefig(caminho_completo)
-    plt.close() 
-    print(f"Gráfico salvo em: {caminho_completo}")
+    with open(caminho, "a") as f:
+        import csv
+        w = csv.writer(f)
+        if novo:
+            w.writerow(["Geracao", "Melhor_Fitness", "X", "Y", "Media"])
+        w.writerow(linha)
+
+def grafico(melhor, geracao):
+    # domínio
+    x = np.linspace(0, 4, 200)
+    y = np.linspace(0, 4, 200)
+    X, Y = np.meshgrid(x, y)
+
+    # calculo correto
+    Z = funObjetivo(X, Y)
+
+    fig = plt.figure(figsize=(10, 8))
+    ax = fig.add_subplot(111, projection="3d")
+    ax.plot_surface(X, Y, Z, cmap=cm.viridis, alpha=0.85)
+
+    # ponto ótimo
+    bx, by, bf = melhor[1], melhor[2], melhor[3]
+    ax.scatter(bx, by, bf, s=120, color="red")
+
+    plt.savefig(f"{CAMINHO_GRAFICOS}/gen_{geracao}.png")
+    plt.close()

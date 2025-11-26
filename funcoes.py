@@ -1,10 +1,12 @@
-import math
+import numpy as np
 import random
 
 # funcao objetivo
-def funObjetivo(x, y): 
+def funObjetivo(x, y):
     return (
-        math.sin(math.pi * x)**2 + (x - 1)**2 * (1 + math.sin(math.pi * y)**2) + (y - 1)**2
+        np.sin(np.pi * x)**2
+        + (x - 1)**2 * (1 + np.sin(np.pi * y)**2)
+        + (y - 1)**2
     )
     
 # codificacao binaria
