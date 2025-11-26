@@ -1,129 +1,46 @@
 # == BIBLIOTECAS 
-import matplotlib.pyplot as plt # plot de graficos
-import random                   # gerar populacao inicial
-import math                     # calculos 
-import numpy                    # calculos (talvez use)
-import csv                      # gravar em csv
-import logging                  # arquivo de log  
-import os                       # criar pastas
+import random 
+# As bibliotecas pesadas (matplotlib, csv, logging) foram movidas para data.py
+
+# IMPORTAÇÕES DOS SEUS MÓDULOS
+from funcoes import * # Lógica do AG (Torneio, Cruzamento, etc)
+from data import * # Dados (Logs, CSV, Gráficos)
 
 # == CONFIGURACOES INICIAIS
 
-# caminhos dos arquivos
-caminho_graficos = "graficos/"
-caminho_csv = "csv/"
-caminho_logs = "logs/"
+# 1. Prepara as pastas (Log, CSV, Graficos)
+setup_diretorios()
 
-# cria pastas se nao existirem
-os.makedirs(caminho_graficos, exist_ok=True)
-os.makedirs(caminho_csv, exist_ok=True)
-os.makedirs(caminho_logs, exist_ok=True)
+# 2. Configura o Logger
+logger = configurar_logger("teste_inicial.log")
+logger.info("=== Iniciando Execução do Algoritmo Genético ===")
 
-#  valores iniciais da funcao
+# valores iniciais da funcao (apenas referência)
 x = 4.00 
 y = 3.53 
 z = 24.3212
 
-# DEFINICOES DAS FUNCOES
-
-# funcao objetivo
-def funObjetivo(x, y): 
-    return (
-        math.sin(math.pi * x)**2 + (x - 1)**2 * (1 + math.sin(math.pi * y)**2) + (y - 1)**2
-    )
-    
-# codificacao binaria
-def codificacao(bits, min=0.0, max=4.0, n_bits=12):         # 12 bits cabe o intervalo de 0 a 4 com precisao de 3 casas decimais
-    inteiro = int(bits, 2)                                  # converte string binaria pra inteiro
-    return min + inteiro * ((max - min) / (2**n_bits - 1))  # formula de conversao
-
-# populacao inicial
-def gerarPopulacao(qtd, n_bits=12):
-    return [''.join(random.choice("01") for _ in range(n_bits*2)) for _ in range(qtd)] # *2 pq x=12 bits e y=12, crom de 24 bits
-
 # teste inicial
-# depois precisa corrigir pra gerar N individuos
+logger.info("Gerando população inicial...")
 pop = gerarPopulacao(10)  
 
 resultados = [] # lista
 for individuo in pop:
-    x_bits = individuo[:12] # 12 primeiros bits
-    y_bits = individuo[12:] # 12 ultimos bits 
+    x_bits = individuo[:12] 
+    y_bits = individuo[12:] 
     x = codificacao(x_bits)
     y = codificacao(y_bits)
     fitness = funObjetivo(x, y)
-    resultados.append((individuo, x, y, fitness)) # armazena 
+    resultados.append((individuo, x, y, fitness)) 
 
 # seleciona o individuo com o menor valor (fitness)
-melhor = min(resultados, key=lambda t: t[3]) # t[3] é a fitness na lista de tuplas
-
-# selecao (metedo torneio)
-def selecao_torneio(populacao_avaliada, k=3):
-    """
-    populacao_avaliada: lista de tuplas (bits, x, y, fitness)
-    k: tamanho do torneio (padrão 3)
-    """
-    # 1. Escolhe 'k' competidores aleatoriamente
-    competidores = random.sample(populacao_avaliada, k)
-    
-    # 2. Vence quem tiver o MENOR fitness (t[3])
-    vencedor = min(competidores, key=lambda t: t[3])
-    
-    # Retorna apenas a string de bits do vencedor
-    return vencedor[0]
-
-# cruzamento (2 pontos aleatorios)
-def cruzamento_2_pontos(pai1, pai2):
-    # O tamanho do cromossomo (24 bits)
-    tamanho = len(pai1)
-    
-    # Escolhe 2 pontos de corte distintos (entre o índice 1 e o penúltimo)
-    # sorted garante que ponto1 venha antes de ponto2
-    p1, p2 = sorted(random.sample(range(1, tamanho), 2))
-    
-    # Cria os filhos trocando a parte do meio (entre p1 e p2)
-    # Filho 1 = Começo Pai1 + Meio Pai2 + Fim Pai1
-    filho1 = pai1[:p1] + pai2[p1:p2] + pai1[p2:]
-    
-    # Filho 2 = Começo Pai2 + Meio Pai1 + Fim Pai2
-    filho2 = pai2[:p1] + pai1[p1:p2] + pai2[p2:]
-    
-    return filho1, filho2
-
-# mutacao (inversao binaria)
-
-# elitismo (um individuo por geracao)
-
-# criterio de parada
-
-# avaliacao da populacao
-
-# ARQUIVOS 
-
-# log
-
-# configuracao do logging (depois
-#logging.basicConfig(
-#    filename='ag_fun13.log', 
-#    level=logging.INFO, 
-#    format='%(asctime)s - %(levelname)s - %(message)s',
-#    datefmt='%Y-%m-%d %H:%M:%S',
-#    handlers=[
-#        logging.FileHandler(caminho_logs + 'ag_fun13.log'),
-#        logging.StreamHandler()
-#    ]    
-#)
-
-# gravar em csv
-
-# plotar graficos
+melhor = min(resultados, key=lambda t: t[3]) 
 
 # == RESULTADOS DOS TESTES INICIAIS
-print("Melhor indivíduo:")
-print("Bits:", melhor[0])
-print(f"x: {melhor[1]:.3f}")
-print(f"y: {melhor[2]:.3f}")
-print(f"fitness: {melhor[3]:.3f}")
+# Usando o logger em vez de print (aparece na tela E salva no arquivo)
+logger.info(f"Melhor indivíduo: Bits: {melhor[0]}")
+logger.info(f"x: {melhor[1]:.3f} | y: {melhor[2]:.3f}")
+logger.info(f"fitness: {melhor[3]:.3f}")
 
 print("\n--- Testando Operadores ---")
 
@@ -131,11 +48,25 @@ print("\n--- Testando Operadores ---")
 pai1 = selecao_torneio(resultados, k=3)
 pai2 = selecao_torneio(resultados, k=3)
 
-print(f"Pai 1 selecionado: {pai1}")
-print(f"Pai 2 selecionado: {pai2}")
+logger.info(f"Pai 1 selecionado: {pai1}")
+logger.info(f"Pai 2 selecionado: {pai2}")
 
 # 2. Realizar o cruzamento
 filho_a, filho_b = cruzamento_2_pontos(pai1, pai2)
 
-print(f"Filho A gerado:    {filho_a}")
-print(f"Filho B gerado:    {filho_b}")
+logger.info(f"Filho A gerado:    {filho_a}")
+logger.info(f"Filho B gerado:    {filho_b}")
+
+print("\n--- Teste de Elitismo ---")
+melhor_bits = elitismo(resultados)
+logger.info(f"Indivíduo preservado pelo elitismo: {melhor_bits}")
+
+# == EXEMPLO DE COMO USAR AS FUNÇÕES DE DADOS (DATA.PY) ==
+
+# Exemplo: Salvando no CSV (Simulando a Geração 0)
+# Formato: [Geracao, Melhor Fitness, X, Y, Media(opcional)]
+salvar_dados_csv("historico_execucao.csv", [0, melhor[3], melhor[1], melhor[2], 0.0])
+
+# Exemplo: Plotando gráfico (Simulação com dados falsos só para testar)
+historico_teste = [13.0, 10.5, 8.2, 5.1, 3.0, 1.5, 0.0]
+plotar_grafico_convergencia(historico_teste, "grafico_teste.png")
