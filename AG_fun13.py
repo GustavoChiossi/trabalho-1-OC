@@ -4,7 +4,7 @@ from data import *
 
 # CONFIG INICIAL 
 setup_diretorios()
-
+mediasFit = []
 tamanho_pop = random.randint(10, 30)   
 num_geracoes = 5                     
 
@@ -26,13 +26,13 @@ for geracao in range(num_geracoes):
     populacao_avaliada.sort(key=lambda t: t[3])
     melhor = populacao_avaliada[0]
     media = sum(t[3] for t in populacao_avaliada) / len(populacao_avaliada)
+    
+    mediasFit.append(media)
 
     salvar_dados_csv(
         "resultado.csv",
         [geracao, melhor[3], melhor[1], melhor[2], media]
     )
-
-    grafico(melhor, geracao)
 
     nova_pop = []
 
@@ -50,3 +50,6 @@ for geracao in range(num_geracoes):
             nova_pop.append(f2)
 
     populacao = nova_pop
+    
+    grafico_linha(mediasFit)
+    grafico(melhor, geracao)

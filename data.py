@@ -22,6 +22,7 @@ def salvar_dados_csv(nome_arquivo, linha):
             w.writerow(["Geracao", "Melhor_Fitness", "X", "Y", "Media"])
         w.writerow(linha)
 
+# grafico 3d
 def grafico(melhor, geracao):
     # domínio
     x = np.linspace(0, 4, 200)
@@ -40,4 +41,15 @@ def grafico(melhor, geracao):
     ax.scatter(bx, by, bf, s=120, color="red")
 
     plt.savefig(f"{CAMINHO_GRAFICOS}/gen_{geracao}.png")
+    plt.close()
+
+# grafico de linha, fitness medio de cada geracao
+def grafico_linha(mediaFit):
+    plt.figure(figsize=(10, 6))
+    plt.plot(mediaFit, marker='o')
+    plt.title("Fitness Médio por Geração")
+    plt.xlabel("Geração")
+    plt.ylabel("Fitness Médio")
+    plt.grid()
+    plt.savefig(f"{CAMINHO_GRAFICOS}/fitness_medio.png")
     plt.close()
