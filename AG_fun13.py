@@ -1,27 +1,19 @@
-# == BIBLIOTECAS 
-import random 
-# As bibliotecas pesadas (matplotlib, csv, logging) foram movidas para data.py
-
-# IMPORTAÇÕES DOS SEUS MÓDULOS
-from funcoes import * # Lógica do AG (Torneio, Cruzamento, etc)
-from data import * # Dados (Logs, CSV, Gráficos)
+import random           
+from funcoes import *   # modulo de logica do AG
+from data import *      # modulo de csv e graficos
 
 # == CONFIGURACOES INICIAIS
 
-# 1. Prepara as pastas (Log, CSV, Graficos)
+# prepara as pastas 
 setup_diretorios()
 
-# 2. Configura o Logger
-logger = configurar_logger("teste_inicial.log")
-logger.info("=== Iniciando Execução do Algoritmo Genético ===")
-
-# valores iniciais da funcao (apenas referência)
+# valores base da funcao
+# (tem que pedir pro professor se tem que usar ou não)
 x = 4.00 
 y = 3.53 
 z = 24.3212
 
 # teste inicial
-logger.info("Gerando população inicial...")
 pop = gerarPopulacao(10)  
 
 resultados = [] # lista
@@ -37,31 +29,39 @@ for individuo in pop:
 melhor = min(resultados, key=lambda t: t[3]) 
 
 # == RESULTADOS DOS TESTES INICIAIS
-# Usando o logger em vez de print (aparece na tela E salva no arquivo)
-logger.info(f"Melhor indivíduo: Bits: {melhor[0]}")
-logger.info(f"x: {melhor[1]:.3f} | y: {melhor[2]:.3f}")
-logger.info(f"fitness: {melhor[3]:.3f}")
+
+print("--- Resultados Iniciais ---")
+print(f"Melhor indivíduo: Bits: {melhor[0]}")
+print(f"x: {melhor[1]:.3f} | y: {melhor[2]:.3f}")
+print(f"fitness: {melhor[3]:.3f}")
 
 print("\n--- Testando Operadores ---")
 
-# 1. Selecionar dois pais usando o Torneio
+# selecionar dois pais usando o Torneio
 pai1 = selecao_torneio(resultados, k=3)
 pai2 = selecao_torneio(resultados, k=3)
 
-logger.info(f"Pai 1 selecionado: {pai1}")
-logger.info(f"Pai 2 selecionado: {pai2}")
+print(f"Pai 1 selecionado: {pai1}")
+print(f"Pai 2 selecionado: {pai2}")
 
-# 2. Realizar o cruzamento
+# realizar o cruzamento
 filho_a, filho_b = cruzamento_2_pontos(pai1, pai2)
 
-logger.info(f"Filho A gerado:    {filho_a}")
-logger.info(f"Filho B gerado:    {filho_b}")
+print(f"Filho A gerado:    {filho_a}")
+print(f"Filho B gerado:    {filho_b}")
 
 print("\n--- Teste de Elitismo ---")
 melhor_bits = elitismo(resultados)
-logger.info(f"Indivíduo preservado pelo elitismo: {melhor_bits}")
+print(f"Indivíduo preservado pelo elitismo: {melhor_bits}")
 
-# == EXEMPLO DE COMO USAR AS FUNÇÕES DE DADOS (DATA.PY) ==
+# Teste de Mutação
+filho_a_mutado = mutacao_inversao(filho_a, taxa_mutacao=0.01)
+filho_b_mutado = mutacao_inversao(filho_b, taxa_mutacao=0.01)
+
+print(f"Filho A mutado:    {filho_a_mutado}")
+print(f"Filho B mutado:    {filho_b_mutado}") 
+
+# == EXEMPLO DE COMO USAR AS FUNÇÕES DE DADOS (DATA.PY) 
 
 # Exemplo: Salvando no CSV (Simulando a Geração 0)
 # Formato: [Geracao, Melhor Fitness, X, Y, Media(opcional)]
