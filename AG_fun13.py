@@ -1,14 +1,31 @@
-# tem uma biblioteca que se chama PyGAD, mas acho que não pode usar
+# BIBLIOTECAS 
 
 import matplotlib.pyplot as plt # plot de graficos
 import random                   # gerar populacao inicial
 import math                     # calculos 
 import numpy                    # calculos (talvez use)
+import csv                      # gravar em csv
+import logging                  # arquivo de log  
+import os                       # criar pastas
+
+# CONFIGURACOES INICIAIS
+
+# caminhos dos arquivos
+caminho_graficos = "graficos/"
+caminho_csv = "csv/"
+caminho_logs = "logs/"
+
+# cria pastas se nao existirem
+os.makedirs(caminho_graficos, exist_ok=True)
+os.makedirs(caminho_csv, exist_ok=True)
+os.makedirs(caminho_logs, exist_ok=True)
 
 #  valores iniciais da funcao
 x = 4.00 
 y = 3.53 
 z = 24.3212
+
+# DEFINICOES DAS FUNCOES
 
 # funcao objetivo
 def funObjetivo(x, y): 
@@ -40,17 +57,6 @@ for individuo in pop:
 
 # seleciona o individuo com o menor valor (fitness)
 melhor = min(resultados, key=lambda t: t[3]) # t[3] é a fitness na lista de tuplas
-
-# resultados
-print("Melhor indivíduo:")
-print("Bits:", melhor[0])
-print(f"x: {melhor[1]:.3f}")
-print(f"y: {melhor[2]:.3f}")
-print(f"fitness: {melhor[3]:.3f}")
-
-
-
-# DEFINIÇÃO DE FUNÇÕES USADAS
 
 # selecao (metedo torneio)
 def selecao_torneio(populacao_avaliada, k=3):
@@ -93,13 +99,32 @@ def cruzamento_2_pontos(pai1, pai2):
 
 # avaliacao da populacao
 
+# ARQUIVOS 
+
+# log
+
+# configuracao do logging (depois
+logging.basicConfig(
+    filename='ag_fun13.log', 
+    level=logging.INFO, 
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    handlers=[
+        logging.FileHandler(caminho_logs + 'ag_fun13.log'),
+        logging.StreamHandler()
+    ]    
+)
+
 # gravar em csv
 
 # plotar graficos
 
-
-
-# IMPRIMINDO RESULTADOS
+# RESULTADOS DOS TESTES INICIAIS
+print("Melhor indivíduo:")
+print("Bits:", melhor[0])
+print(f"x: {melhor[1]:.3f}")
+print(f"y: {melhor[2]:.3f}")
+print(f"fitness: {melhor[3]:.3f}")
 
 print("\n--- Testando Operadores ---")
 
