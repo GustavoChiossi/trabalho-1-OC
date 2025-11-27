@@ -6,7 +6,7 @@ from data import *
 mediasFit = []                       # lista pra guardar as medias fitness 
 setup_diretorios()                   # iniciar diretorios 
 TAMANHO_POP = random.randint(20, 60) # tamanho entre 20 e 60 
-NUM_GERACOES = 5                                             
+NUM_GERACOES = 50                                             
 TAXA_CRUZAMENTO = 0.7                   
 TAXA_MUTACAO = 0.01       
 
@@ -20,7 +20,7 @@ if valor.strip():               # se o usuario digitou algo
 else:
     TAMANHO_POP = TAMANHO_POP   # usa o valor aleatorio gerado
 
-valor = input("Número de gerações (padrão: 5): ")
+valor = input("Número de gerações (padrão: 50): ")
 if valor.strip():
     NUM_GERACOES = int(valor)
 
