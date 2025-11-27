@@ -1,5 +1,5 @@
-import numpy as np
 import random
+import numpy as np
 
 # FUNCAO OBJETIVO
 def funObjetivo(x, y):

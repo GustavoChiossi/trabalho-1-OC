@@ -1,6 +1,6 @@
 import random
-from funcoes import *
 from data import *
+from funcoes import *
 
 # CONFIGURACOES INICIAIS (PADROES)
 mediasFit = []                       # lista pra guardar as medias fitness 

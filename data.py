@@ -1,9 +1,9 @@
-import numpy as np
-from matplotlib import cm
-import matplotlib.pyplot as plt 
 import os
 import csv
 import funcoes 
+import numpy as np
+from matplotlib import cm
+import matplotlib.pyplot as plt 
 
 # define o caminho dos diretorios
 CAMINHO_GRAFICOS = "graficos/"
@@ -70,12 +70,7 @@ def heatmap():
     X, Y, Z = grid()
 
     plt.figure(figsize=(10, 8))
-    plt.contourf(
-        X, Y, Z,
-        levels=50,
-        cmap="inferno",    # invertido: áreas claras = melhor fitness
-        origin="lower"
-    )
+    plt.contourf(X, Y, Z, levels=50, cmap="inferno", origin="lower") # preenchimento do contorno
 
     plt.title("Mapa de Contorno da Função")
     plt.xlabel("X")
