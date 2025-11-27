@@ -36,12 +36,12 @@ def grafico(melhor, geracao):
 
     fig = plt.figure(figsize=(10, 8))                       # cria a figura
     ax = fig.add_subplot(111, projection="3d")              # cria o eixo 3d 
-    ax.plot_surface(X, Y, Z, cmap=cm.viridis, alpha=0.85)   # superficie 3d
+    ax.plot_surface(X, Y, Z, cmap=cm.inferno, alpha=0.85)   # superficie 3d
 
     bx, by, bf = melhor[1], melhor[2], melhor[3] # melhor individuo (x, y, fitness)
     ax.scatter(bx, by, bf, s=120, color="red")   # ponto do melhor individuo
 
-    plt.savefig(f"{CAMINHO_GRAFICOS}/gen_{geracao}.png") # salva o grafico
+    plt.savefig(f"{CAMINHO_GRAFICOS}/geracao{geracao}.png") # salva o grafico
     plt.close() # fecha a figura
 
 # grafico de linha
@@ -54,3 +54,20 @@ def grafico_linha(mediaFit):                # grafico da media fitness por gerac
     plt.grid()                              # ativa a grade
     plt.savefig(f"{CAMINHO_GRAFICOS}/fitness_medio.png") 
     plt.close() 
+    
+# gera heatmap
+def heatmap(caminho):
+    x = np.linspace(0, 4, 400)
+    y = np.linspace(0, 4, 400)
+    X, Y = np.meshgrid(x, y)
+    Z = funcoes.funObjetivo(X, Y)
+    
+    plt.figure(figsize=(10, 8))
+    plt.contourf(X, Y, Z, levels=50, origin='lower', cmap='inferno', antialiased=True)
+
+    plt.title("Heatmap da Função")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+
+    plt.savefig(f"{CAMINHO_GRAFICOS}/heatmap.png")
+    plt.close()
