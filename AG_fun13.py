@@ -3,7 +3,6 @@ from funcoes import *
 from data import *
 
 # CONFIGURACOES INICIAIS (PADROES)
-caminho = []                         # registrar o melhor de cada geracao
 mediasFit = []                       # lista pra guardar as medias fitness 
 setup_diretorios()                   # iniciar diretorios 
 TAMANHO_POP = random.randint(20, 60) # tamanho entre 20 e 60 
@@ -55,8 +54,6 @@ for geracao in range(NUM_GERACOES):
     media = sum(t[3] for t in populacao_avaliada) / len(populacao_avaliada) 
     
     mediasFit.append(media) # adiciona as medias na lista de medias
-    
-    caminho.append((melhor[1], melhor[2]))  # registra o melhor da geracao (x,y)
 
     # salva os dados da geracao no arquivo csv
     salvar_dados_csv(
@@ -84,4 +81,4 @@ for geracao in range(NUM_GERACOES):
     # gera os graficos a cada geracao
     grafico_linha(mediasFit) 
     grafico(melhor, geracao)
-    heatmap(caminho)
+    heatmap()

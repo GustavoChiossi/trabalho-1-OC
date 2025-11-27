@@ -13,6 +13,7 @@ CAMINHO_CSV = "csv/"
 def setup_diretorios(): 
     os.makedirs(CAMINHO_GRAFICOS, exist_ok=True)
     os.makedirs(CAMINHO_CSV, exist_ok=True)
+    os.makedirs(CAMINHO_GRAFICOS, exist_ok=True)
 
 # salvar dados em arquivo csv
 def salvar_dados_csv(nome_arquivo, linha):              # salva uma linha no arquivo csv
@@ -54,18 +55,29 @@ def grafico_linha(mediaFit):                # grafico da media fitness por gerac
     plt.grid()                              # ativa a grade
     plt.savefig(f"{CAMINHO_GRAFICOS}/fitness_medio.png") 
     plt.close() 
-    
-# gera heatmap
-def heatmap(caminho):
-    x = np.linspace(0, 4, 400)
-    y = np.linspace(0, 4, 400)
+
+
+# gera a grade para o heatmap
+def grid(res=400):
+    x = np.linspace(0, 4, res)
+    y = np.linspace(0, 4, res)
     X, Y = np.meshgrid(x, y)
     Z = funcoes.funObjetivo(X, Y)
-    
-    plt.figure(figsize=(10, 8))
-    plt.contourf(X, Y, Z, levels=50, origin='lower', cmap='inferno', antialiased=True)
+    return X, Y, Z
 
-    plt.title("Heatmap da Função")
+# gera o heatmap
+def heatmap():
+    X, Y, Z = grid()
+
+    plt.figure(figsize=(10, 8))
+    plt.contourf(
+        X, Y, Z,
+        levels=50,
+        cmap="inferno",    # invertido: áreas claras = melhor fitness
+        origin="lower"
+    )
+
+    plt.title("Mapa de Contorno da Função")
     plt.xlabel("X")
     plt.ylabel("Y")
 
